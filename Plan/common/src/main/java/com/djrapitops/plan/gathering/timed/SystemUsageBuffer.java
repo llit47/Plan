@@ -44,7 +44,6 @@ public class SystemUsageBuffer {
 
     @Inject
     public SystemUsageBuffer() {
-        warmUp();
     }
 
     public void warmUp() {
@@ -67,11 +66,13 @@ public class SystemUsageBuffer {
 
     @Singleton
     public static class RamAndCpuTask extends TaskSystem.Task {
+        private final PlanConfig config;
         private final SystemUsageBuffer buffer;
         private final PluginLogger logger;
 
         @Inject
-        public RamAndCpuTask(SystemUsageBuffer buffer, PluginLogger logger) {
+        public RamAndCpuTask(PlanConfig config, SystemUsageBuffer buffer, PluginLogger logger) {
+            this.config = config;
             this.buffer = buffer;
             this.logger = logger;
         }
@@ -89,6 +90,8 @@ public class SystemUsageBuffer {
 
         @Override
         public void register(RunnableFactory runnableFactory) {
+            if (config.isFalse(DataGatheringSettings.SERVER_PERFORMANCE)) return;
+            buffer.warmUp();
             long delay = TimeAmount.toTicks(1, TimeUnit.MINUTES) - TimeAmount.toTicks(500, TimeUnit.MILLISECONDS);
             long period = TimeAmount.toTicks(1, TimeUnit.SECONDS);
             runnableFactory.create(this).runTaskTimerAsynchronously(delay, period);
@@ -133,6 +136,7 @@ public class SystemUsageBuffer {
 
         @Override
         public void register(RunnableFactory runnableFactory) {
+            if (config.isFalse(DataGatheringSettings.SERVER_PERFORMANCE)) return;
             long delay = TimeAmount.toTicks(50, TimeUnit.SECONDS);
             long period = TimeAmount.toTicks(1, TimeUnit.SECONDS);
             runnableFactory.create(this).runTaskTimerAsynchronously(delay, period);

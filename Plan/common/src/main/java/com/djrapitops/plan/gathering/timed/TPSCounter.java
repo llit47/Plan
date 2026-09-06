@@ -17,6 +17,8 @@
 package com.djrapitops.plan.gathering.timed;
 
 import com.djrapitops.plan.TaskSystem;
+import com.djrapitops.plan.settings.config.PlanConfig;
+import com.djrapitops.plan.settings.config.paths.DataGatheringSettings;
 import com.djrapitops.plan.utilities.logging.ErrorContext;
 import com.djrapitops.plan.utilities.logging.ErrorLogger;
 import net.playeranalytics.plugin.scheduling.RunnableFactory;
@@ -34,11 +36,14 @@ public abstract class TPSCounter extends TaskSystem.Task {
 
     protected final PluginLogger logger;
     protected final ErrorLogger errorLogger;
+    private final PlanConfig config;
 
     protected TPSCounter(
+            PlanConfig config,
             PluginLogger logger,
             ErrorLogger errorLogger
     ) {
+        this.config = config;
         this.logger = logger;
         this.errorLogger = errorLogger;
     }
@@ -55,6 +60,7 @@ public abstract class TPSCounter extends TaskSystem.Task {
     }
 
     public void register(RunnableFactory runnableFactory) {
+        if (config.isFalse(DataGatheringSettings.SERVER_PERFORMANCE)) return;
         long delay = TimeAmount.toTicks(1L, TimeUnit.MINUTES);
         long period = TimeAmount.toTicks(1L, TimeUnit.SECONDS);
         runnableFactory.create(this).runTaskTimer(delay, period);
