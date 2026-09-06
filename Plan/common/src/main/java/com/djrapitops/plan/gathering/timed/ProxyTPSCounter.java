@@ -19,6 +19,7 @@ package com.djrapitops.plan.gathering.timed;
 import com.djrapitops.plan.gathering.ServerSensor;
 import com.djrapitops.plan.gathering.domain.builders.TPSBuilder;
 import com.djrapitops.plan.identification.ServerInfo;
+import com.djrapitops.plan.settings.config.PlanConfig;
 import com.djrapitops.plan.storage.database.DBSystem;
 import com.djrapitops.plan.storage.database.transactions.events.TPSStoreTransaction;
 import com.djrapitops.plan.utilities.analysis.Average;
@@ -49,6 +50,7 @@ public class ProxyTPSCounter extends TPSCounter {
 
     @Inject
     public ProxyTPSCounter(
+            PlanConfig config,
             ServerSensor<?> serverSensor,
             SystemUsageBuffer systemUsage,
             DBSystem dbSystem,
@@ -56,7 +58,7 @@ public class ProxyTPSCounter extends TPSCounter {
             PluginLogger logger,
             ErrorLogger errorLogger
     ) {
-        super(logger, errorLogger);
+        super(config, logger, errorLogger);
 
         this.serverSensor = serverSensor;
         this.dbSystem = dbSystem;

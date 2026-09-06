@@ -27,16 +27,25 @@ import java.util.function.Predicate;
  */
 public class BooleanSetting extends Setting<Boolean> {
 
+    private final Boolean defaultValue;
+
     public BooleanSetting(String path) {
         super(path, Boolean.class);
+        defaultValue = false;
+    }
+
+    public BooleanSetting(String path, boolean defaultValue) {
+        super(path, defaultValue);
+        this.defaultValue = defaultValue;
     }
 
     public BooleanSetting(String path, Predicate<Boolean> validator) {
         super(path, Boolean.class, validator);
+        defaultValue = false;
     }
 
     @Override
     public Boolean getValueFrom(ConfigNode node) {
-        return node.getNode(path).map(ConfigNode::getBoolean).orElse(false);
+        return node.getNode(path).map(ConfigNode::getBoolean).orElse(defaultValue);
     }
 }

@@ -35,6 +35,7 @@ public class DataGatheringSettings {
     public static final Setting<String> GEOLOCATION_DOWNLOAD_URL = new StringSetting("Data_gathering.Geolocation_Download_URL");
     public static final Setting<Boolean> PING = new BooleanSetting("Data_gathering.Ping");
     public static final Setting<Boolean> DISK_SPACE = new BooleanSetting("Data_gathering.Disk_space");
+    public static final Setting<Boolean> SERVER_PERFORMANCE = new BooleanSetting("Data_gathering.Server_performance", true);
     public static final Setting<Boolean> LOG_UNKNOWN_COMMANDS = new BooleanSetting("Data_gathering.Commands.Log_unknown");
     public static final Setting<Boolean> COMBINE_COMMAND_ALIASES = new BooleanSetting("Data_gathering.Commands.Log_aliases_as_main_command");
     public static final Setting<Boolean> JOIN_ADDRESSES = new BooleanSetting("Data_gathering.Join_addresses.Enabled");
